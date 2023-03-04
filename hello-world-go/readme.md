@@ -25,7 +25,7 @@ This command starts a new container from the `hello-go-image` image, maps port 8
 
 4. Visit `http://localhost:8080/helloworld` in your web browser to see the "Hello SQOIN" message.
 
-5. Now, if you make changes to `index.js` on your local machine, the changes will be automatically synced to the container code and the container will restart with the new code.
+5. Now, if you make changes to `main.go` on your local machine, the changes will be automatically synced to the container code and the container will restart with the new code.
 
 ## License
 
