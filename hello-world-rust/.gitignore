@@ -1,0 +1,18 @@
+# Rust build artifacts
+target/
+
+# Generated documentation
+doc/
+
+# Environment file
+.env
+
+# Text editor files
+.vscode/
+.idea/
+
+# macOS file system metadata
+.DS_Store
+
+# Windows file system metadata
+Thumbs.db
