@@ -1,0 +1,25 @@
+# Ignore binary files
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Ignore Go binaries and test files
+bin/
+*.test
+*.prof
+
+# Ignore Docker artifacts
+docker-compose.yml
+.dockerignore
+docker-compose.override.yml
+
+# Ignore Go modules cache
+vendor/
+go.sum
+go.mod
+
+# Ignore editor/IDE files
+.idea/
+.vscode/
+*.swp
