@@ -1,0 +1,10 @@
+# node_modules directory
+node_modules/
+
+# Docker artifacts
+*.log
+*.pid
+*.gz
+*.json
+.DS_Store
+.Dockerfile
