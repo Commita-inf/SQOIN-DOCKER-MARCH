@@ -1,0 +1,19 @@
+# Ignore bundler metadata
+/.bundle
+
+# Ignore all logfiles and tempfiles.
+/log/*
+/tmp/*
+
+# Ignore local configuration files
+/config/database.yml
+/config/secrets.yml
+
+# Ignore the local environment file
+.env
+
+# Ignore system specific settings
+/.idea
+/.vscode
+.DS_Store
+
