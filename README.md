@@ -2,7 +2,8 @@
 
 # Hello World Projects in Multiple Programming Languages
 
-This repository contains a set of "Hello, World!" projects implemented in Python, Node.js, and Rust, .... The purpose of this repository is to provide a simple example of how to print "Hello, World!" using different programming languages:
+This repository contains a set of "Hello, World!" projects implemented in Python, Node.js, and Rust, .... The purpose of this repository is to provide a simple example of how to print "Hello, World!" or to print a list of articles names using different programming languages, we also used docker in order to run different program inside a container
+The following exercices are included in this training:
 
 `hello-react-ruby`
 `hello-world-angular`
