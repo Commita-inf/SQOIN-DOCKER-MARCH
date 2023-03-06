@@ -1,35 +1,67 @@
 #!/bin/bash
 
-# Read database name from config file
-DB_NAME=$(cat config.txt)
+# Check if Docker is installed
+if ! command -v docker &> /dev/null; then
+    echo "Docker is not installed. Please install Docker to continue."
+    exit 1
+fi
 
-# Generate Dockerfile with database name
-cat <<EOF > Dockerfile
-FROM $DB_NAME:latest
+# Check if Docker is running
+if ! docker info >/dev/null 2>&1; then
+  echo "Docker is not running ..."
+  exit 1
+fi
 
-ENV MYSQL_ROOT_PASSWORD=$DB_NAME
-ENV MYSQL_DATABASE=$DB_NAME
-ENV MYSQL_USER=$DB_NAME
-ENV MYSQL_PASSWORD=$DB_NAME
+# Read database configuration from config.ini file
+source config.ini
+
+# Set Dockerfile variables using values from config.ini
+case ${IMAGE} in
+  "mysql")
+    cat <<EOF > Dockerfile
+FROM mysql:${VERSION}
+
+ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+ENV MYSQL_DATABASE=${MYSQL_DATABASE}
+ENV MYSQL_USER=${MYSQL_USER}
+ENV MYSQL_PASSWORD=${MYSQL_PASSWORD}
 EOF
+    DB_IMAGE_NAME="db-${MYSQL_DATABASE}:${VERSION}"
+    DOCKER_RUN="docker run -d --name ${MYSQL_DATABASE} ${DB_IMAGE_NAME}"
+    ;;
+  "postgres")
+    cat <<EOF > Dockerfile
+FROM postgres:${VERSION}
+
+ENV POSTGRES_USER=${POSTGRES_USER}
+ENV POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+ENV POSTGRES_DB=${POSTGRES_DB}
+EOF
+    DB_IMAGE_NAME="db-${POSTGRES_DB}:${VERSION}"
+    DOCKER_RUN="docker run -d --name ${POSTGRES_DB} ${DB_IMAGE_NAME}"
+    ;;
+  *)
+    echo "Unsupported database type: ${IMAGE}"
+    exit 1
+    ;;
+esac
 
 # Build Docker image with specified database name
-DB_IMAGE_NAME="db-$DB_NAME:latest"
-docker build -t $DB_IMAGE_NAME .
-docker run --name $DB_NAME $DB_IMAGE_NAME
+docker build -t ${DB_IMAGE_NAME} .
 
+# Run Docker container
+${DOCKER_RUN}
 
 # Check if Docker container is down and restart if necessary
 while true
 do
-
-CONTAINER_STATUS=$(docker ps -f name=$DB_NAME --format '{{.Status}}')
-if [[ $CONTAINER_STATUS != *"Up"* ]]; then
-  docker rm $DB_NAME
-  sleep 2
-  echo "DB Container down, initiating running ..."
-  docker run -d --name $DB_NAME $DB_IMAGE_NAME
-fi
+  CONTAINER_STATUS=$(docker ps -f name=${MYSQL_DATABASE:-$POSTGRES_DB} --format '{{.Status}}')
+  if [[ $CONTAINER_STATUS != *"Up"* ]]; then
+    docker rm ${MYSQL_DATABASE:-$POSTGRES_DB}
+    sleep 2
+    echo "DB Container down, initiating running ..."
+    ${DOCKER_RUN}
+  fi
   # Wait for 10 seconds before checking again
-  sleep 2
- done 
+  sleep 10
+done
