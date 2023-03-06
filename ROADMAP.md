@@ -4,6 +4,8 @@
 
 1. Dev 😎
 2. Dep 😡
+<h4>Remark</h4>
+<p>In order to expose the server address in the frontend, use the ipconfig to take the network address and use to fetech articles</p>
 
 ## Angular
 
