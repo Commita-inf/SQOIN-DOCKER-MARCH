@@ -1,4 +1,3 @@
-<h1>Welcome to SQOIN MARCH TRAINING</h1>
 # Example Projects STATUS
 
 ## React Ruby
