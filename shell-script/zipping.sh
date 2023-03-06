@@ -14,8 +14,8 @@ rsync -r --exclude-from="$dir_name/.gitignore" "$dir_name/" "$copy_name/"
 zip -r "$copy_name.zip" "$copy_name"
 
 # Send the zip file as an email attachment
-to_email="lawayebyahia@gmail.com"
-from_email="weavers.top@gmail.com"
+to_email="receiver@example.com"
+from_email="sender@example.com"
 subject="My Project Copy"
 body="Attached is a copy of my project directory."
 attachment="$copy_name.zip"

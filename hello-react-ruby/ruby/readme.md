@@ -20,12 +20,7 @@ This is a simple Ruby servert that runs in a Docker container and displays a lis
 
 `docker run -t -p 4567:4567 ruby-server-image`
 
-This command starts a new container from the `ruby-server-image` image, maps port 8080 from the container to port 8080 on your local machine, and mounts the current directory as a volume in the container.
+This command starts a new container from the `ruby-server-image` image, maps port 4567 from the container to port 4567 on your local machine, and mounts the current directory as a volume in the container.
 
-4. Visit `http://localhost:8080/helloworld` in your web browser to see the "Hello SQOIN" message.
+4. Visit `http://localhost:4567/articles` in your web browser to see the list.
 
-5. Now, if you make changes to `main.go` on your local machine, the changes will be automatically synced to the container code and the container will restart with the new code.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
