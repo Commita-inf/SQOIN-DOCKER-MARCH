@@ -9,5 +9,6 @@ articles = [
 
 get '/articles' do
   content_type :json
+  headers 'Access-Control-Allow-Origin' => '*'
   articles.to_json
 end

@@ -6,7 +6,7 @@ function App() {
 	const [articles, setArticles] = useState([]);
 
 	useEffect(() => {
-		fetch("http://localhost:4567/articles")
+		fetch("http://192.168.100.12:4567/articles")
 			.then((res) => res.json())
 			.then((data) => setArticles(data))
 			.catch((err) => console.error(err));
@@ -17,7 +17,7 @@ function App() {
 			<h1>List of Articles</h1>
 			<ul>
 				{articles.map((article) => (
-					<li key={article.id}>{article.name}</li>
+					<li key={article.id}>{article.title}</li>
 				))}
 			</ul>
 		</div>
