@@ -21,13 +21,15 @@ if [ ! -d "${BACKUP_DIR}" ]; then
   mkdir ${BACKUP_DIR}
 fi
 
+DB_CONTAINER_NAME="db-${IMAGE}-container"
+
 # Backup database
 case ${IMAGE} in
   "mysql")
-    docker exec ${DATABASE} sh -c 'exec mysqldump --all-databases -uroot -p"$MYSQL_ROOT_PASSWORD"' > ${BACKUP_DIR}/backup.sql
+    docker exec ${DB_CONTAINER_NAME} sh -c 'exec mysqldump --all-databases -uroot -p"$MYSQL_ROOT_PASSWORD"' > ${BACKUP_DIR}/backup.sql
     ;;
   "postgres")
-    docker exec ${DATABASE} sh -c 'exec pg_dumpall -U postgres' > ${BACKUP_DIR}/backup.sql
+    docker exec ${DB_CONTAINER_NAME} sh -c 'exec pg_dumpall -U ${POSTGRES_USER}' > ${BACKUP_DIR}/backup.sql
     ;;
   *)
     echo "Unsupported database type: ${IMAGE}"

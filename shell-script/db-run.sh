@@ -27,7 +27,7 @@ ENV MYSQL_USER=${MYSQL_USER}
 ENV MYSQL_PASSWORD=${MYSQL_PASSWORD}
 EOF
     DB_IMAGE_NAME="db-${MYSQL_DATABASE}:${VERSION}"
-    DOCKER_RUN="docker run -d --name ${MYSQL_DATABASE} ${DB_IMAGE_NAME}"
+    docker build -t ${DB_IMAGE_NAME} .
     ;;
   "postgres")
     cat <<EOF > Dockerfile
@@ -38,7 +38,7 @@ ENV POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 ENV POSTGRES_DB=${POSTGRES_DB}
 EOF
     DB_IMAGE_NAME="db-${POSTGRES_DB}:${VERSION}"
-    DOCKER_RUN="docker run -d --name ${POSTGRES_DB} ${DB_IMAGE_NAME}"
+    docker build -t ${DB_IMAGE_NAME} .
     ;;
   *)
     echo "Unsupported database type: ${IMAGE}"
@@ -46,18 +46,19 @@ EOF
     ;;
 esac
 
-# Build Docker image with specified database name
-docker build -t ${DB_IMAGE_NAME} .
+DB_CONTAINER_NAME="db-${IMAGE}-container"
+DOCKER_RUN="docker run -d --rm --name ${DB_CONTAINER_NAME} ${DB_IMAGE_NAME}"
 
 # Run Docker container
 ${DOCKER_RUN}
+ echo "${IMAGE} Database is running"
 
 # Check if Docker container is down and restart if necessary
 while true
 do
-  CONTAINER_STATUS=$(docker ps -f name=${MYSQL_DATABASE:-$POSTGRES_DB} --format '{{.Status}}')
+  CONTAINER_STATUS=$(docker ps -f name=${DB_CONTAINER_NAME} --format '{{.Status}}')
   if [[ $CONTAINER_STATUS != *"Up"* ]]; then
-    docker rm ${MYSQL_DATABASE:-$POSTGRES_DB}
+    docker rm ${DB_CONTAINER_NAME}
     sleep 2
     echo "DB Container down, initiating running ..."
     ${DOCKER_RUN}

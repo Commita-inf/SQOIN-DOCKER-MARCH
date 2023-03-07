@@ -1,6 +1,5 @@
-FROM mysql:latest
+FROM postgres:latest
 
-ENV MYSQL_ROOT_PASSWORD=password456
-ENV MYSQL_DATABASE=mysqldatabase
-ENV MYSQL_USER=myuser
-ENV MYSQL_PASSWORD=password789
+ENV POSTGRES_USER=postgreuser456
+ENV POSTGRES_PASSWORD=password789
+ENV POSTGRES_DB=mypostgresdatabase
